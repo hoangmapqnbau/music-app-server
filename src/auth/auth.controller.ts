@@ -1,6 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -10,7 +11,7 @@ export class AuthController {
   async login(@Body() req) {
     const user = await this.authService.validateUser(req.username, req.password);
     if (!user) {
-      return { message: 'Invalid credentials' };
+      return { message: 'Wrong username or password!!!' };
     }
     return this.authService.login(user);
   }
