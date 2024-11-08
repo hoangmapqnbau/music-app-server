@@ -13,10 +13,13 @@ export class UsersService {
     return this.usersRepository.find({});
   }
 
-  async getUserById(userId: string): Promise<User> {
-    return this.usersRepository.findOne({ userId });
+  async getUserByEmail(email: string): Promise<User> {
+    return this.usersRepository.findOne( { email } );
   }
-
+  
+  async getUserById(id: string): Promise<User> {
+    return this.usersRepository.findOneById(id);
+  }
   async createUser(
     email: string,
     password: string,

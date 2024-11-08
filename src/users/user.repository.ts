@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -7,10 +7,18 @@ import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UserRepository {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+  ) {}
 
   async findOne(userFilterQuery: FilterQuery<User>): Promise<User> {
-    return this.userModel.findOne(userFilterQuery);
+    const foundUser = this.userModel.findOne({ email: userFilterQuery.email });
+    return foundUser;
+  }
+
+  async findOneById(userid: string): Promise<User> {
+    const foundUser = this.userModel.findOne({ userId: userid });
+    return foundUser;
   }
 
   async find(usersFilterQuery: FilterQuery<User>): Promise<User[]> {
