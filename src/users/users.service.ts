@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
 import { User } from './schemas/user.schema';
@@ -16,7 +16,10 @@ export class UsersService {
   async getUserByEmail(email: string): Promise<User> {
     return this.usersRepository.findOne( { email } );
   }
-
+  
+  async getUserById(id: string): Promise<User> {
+    return this.usersRepository.findOneById(id);
+  }
   async createUser(
     email: string,
     password: string,

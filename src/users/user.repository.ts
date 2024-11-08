@@ -16,6 +16,11 @@ export class UserRepository {
     return foundUser;
   }
 
+  async findOneById(userid: string): Promise<User> {
+    const foundUser = this.userModel.findOne({ userId: userid });
+    return foundUser;
+  }
+
   async find(usersFilterQuery: FilterQuery<User>): Promise<User[]> {
     return this.userModel.find(usersFilterQuery);
   }

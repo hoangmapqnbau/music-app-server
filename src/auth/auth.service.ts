@@ -4,6 +4,7 @@ import * as bcrypt from 'bcryptjs';
 
 import { UsersService } from '../users/users.service';
 import { User } from 'src/users/schemas/user.schema';
+import { GetUserDTO } from './dtos/get-user-dto';
 
 @Injectable()
 export class AuthService {
@@ -24,12 +25,17 @@ export class AuthService {
   async login(user: User) {
     const payload = {
       username: user.email,
-      userId: user.userId,
       sub: user.userId,
     };
 
+    const userResponse = new GetUserDTO();
+    userResponse.email = user.email;
+    userResponse.fullName = user.fullName;
+    userResponse.userId = user.userId;
+
     return {
       access_token: this.jwtService.sign(payload),
+      userResponse,
     };
   }
 }
