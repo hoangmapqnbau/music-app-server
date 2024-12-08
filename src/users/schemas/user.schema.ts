@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Role } from './role.schema';
 export type UserDocument = User & Document;
 
 @Schema()
-export class User {
+export class User extends Role {
   @Prop()
   userId: string;
 
@@ -20,4 +21,4 @@ export class User {
   passWordHint: string;
 }
 
-export const UserSchme = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);

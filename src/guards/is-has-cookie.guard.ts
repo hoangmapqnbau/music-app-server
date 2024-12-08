@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 
 import { Request } from 'express';
-import { SECURE_KEY } from 'src/constant/constant';
 
 @Injectable()
 export class IsHasCookieGuard implements CanActivate {

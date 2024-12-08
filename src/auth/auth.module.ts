@@ -13,7 +13,7 @@ import { SECURE_KEY } from 'src/constant/constant';
     PassportModule,
     JwtModule.register({
       secret: SECURE_KEY,
-      signOptions: { expiresIn: '1440m' },
+      signOptions: { expiresIn: '99999m' },
     }),
   ],
   controllers: [AuthController],
