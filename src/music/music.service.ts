@@ -17,17 +17,20 @@ export class MusicService {
     song: Express.Multer.File,
     image: Express.Multer.File,
     artist: string,
+    gerne: string
   ): Promise<Music> {
     const newMusic = new this.musicModel({
       songName: title,
       fileName: song['filename'],
       image: image['filename'],
       artist,
+      gerne
     });
     return newMusic.save();
   }
 
   async findAll(paginationQuery = null): Promise<Music[]> {
+    const query = this.musicModel.find().sort({ uploadedAt: -1 });
     if (paginationQuery) {
       const { page = null, limit = null } = paginationQuery;
 
@@ -37,7 +40,7 @@ export class MusicService {
       }
     }
 
-    return this.musicModel.find().exec();
+    return query.exec();
   }
 
   async findMusicById(musicId): Promise<Music> {
@@ -73,7 +76,7 @@ export class MusicService {
     }
   }
 
-  async getHistory(userId: string): Promise<Music[]> {
+  async getHistory(userId: string, getAll): Promise<Music[]> {
     const historyOfUser = await this.historyModel.findOne({ userId }).exec();
     if (!historyOfUser || !historyOfUser.songListeneds) return [];
 
@@ -85,8 +88,11 @@ export class MusicService {
 
     const userHistorySongs: Music[] = historySongs
       .map((hs) => allSongs.find((song) => song._id.toString() === hs.songId))
-      .filter(Boolean)
-      .slice(0, 10);
+      .filter(Boolean);
+
+    if (!getAll) {
+      userHistorySongs.slice(0, 10);
+    }
 
     return userHistorySongs;
   }
