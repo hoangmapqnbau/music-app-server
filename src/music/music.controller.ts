@@ -26,8 +26,8 @@ export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
   @Get('recent')
-  async getRecentlySongs(@Req() req): Promise<Music[]> {
-    return this.musicService.getHistory(req.user.userId);
+  async getRecentlySongs(@Req() req, @Query('getAll') getAll: boolean = false): Promise<Music[]> {
+    return this.musicService.getHistory(req.user.userId, getAll);
   }
 
   @Post('upload')
@@ -101,12 +101,14 @@ export class MusicController {
     },
     @Body('title') title: string,
     @Body('artist') artist: string,
+    @Body('gerne') gerne: string,
   ) {
     const song = await this.musicService.saveMusic(
       title,
       files.music[0],
       files.image[0],
       artist,
+      gerne
     );
     return { message: 'Upload successful', song };
   }
